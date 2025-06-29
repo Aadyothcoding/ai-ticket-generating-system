@@ -1,32 +1,35 @@
 # Ticket Generating System
 
-This project is a Ticket Generating System designed to streamline the process of creating, managing, and tracking tickets for various issues or requests.
+This project is a Ticket Generating System designed to streamline the process of creating, managing, and tracking support tickets using AI-powered triage and assignment.
 
 ## Features
 
-- Create new tickets with relevant details
-- **Automatic ticket assignment:** Uses the Google Gemini API to analyze ticket content and intelligently assign tickets to the most appropriate users or teams
-- Track ticket status (open, in progress, closed, etc.)
-- **Agent dashboard:** Agents can view, update, and track the status of tickets assigned to them in real time
-- View ticket history and comments
-- User authentication and authorization
+- Create new tickets with title and description
+- **Automatic ticket triage and assignment:** Uses the Google Gemini API to analyze ticket content, estimate priority, extract required skills, and assign tickets to the most suitable moderator based on their skills
+- Track ticket status (TODO, IN_PROGRESS, etc.)
+- **Agent dashboard:** Moderators and admins can view, update, and track the status of tickets assigned to them in real time
+- Ticket history and helpful AI-generated notes for each ticket
+- User authentication and authorization (admin, moderator, user roles)
+- Admin panel for managing users and their skills
 
 ## Technologies Used
 
-- Python (or specify your backend language)
-- Flask/Django/FastAPI (specify your framework)
-- Google Gemini API for ticket classification and assignment
-- Frontend: React/Angular/Vue (specify if applicable)
-- Database: PostgreSQL/MySQL/SQLite (specify your DB)
-- Other tools/libraries as needed
+- Node.js (backend)
+- Express.js (web framework)
+- MongoDB (database, via Mongoose)
+- React (frontend, with Vite and Tailwind CSS)
+- Google Gemini API (for ticket analysis and skill extraction)
+- Inngest (event-driven workflow)
+- Nodemailer (email notifications)
 
 ## How It Works
 
-- When a new ticket is created, the system sends the ticket details to the Google Gemini API.
-- The Gemini API analyzes the ticket's content and determines the most suitable user or team to handle the ticket.
-- The ticket is automatically assigned based on the API's recommendation.
-- Agents can log in to their dashboard to view all tickets assigned to them, update ticket statuses (open, in progress, closed), and add comments or notes.
-- The system tracks all status changes and maintains a history for each ticket.
+- When a new ticket is created, the backend sends the ticket details to the Google Gemini API using a custom AI agent.
+- The Gemini API analyzes the ticket, summarizes the issue, estimates its priority, provides helpful notes, and extracts relevant technical skills.
+- The system matches the extracted skills to moderators in the database and assigns the ticket to the best-fit moderator (or an admin if no match is found).
+- The assigned moderator receives an email notification about the new ticket.
+- Moderators and admins can log in to their dashboard to view all tickets assigned to them, update ticket statuses, and review AI-generated notes and ticket history.
+- All status changes and updates are tracked for each ticket.
 
 ## Getting Started
 
@@ -36,25 +39,36 @@ This project is a Ticket Generating System designed to streamline the process of
    cd ticket_generating_system
    ```
 
-2. **Install dependencies:**
+2. **Install backend dependencies:**
    ```sh
-   pip install -r requirements.txt
+   cd ai-ticket-assistant
+   npm install
    ```
 
-3. **Set up the database:**
-   - Update your database configuration in the settings file.
-   - Run migrations if required.
-
-4. **Configure Google Gemini API:**
-   - Add your Gemini API credentials to the environment or configuration file.
-
-5. **Run the application:**
+3. **Install frontend dependencies:**
    ```sh
-   python app.py
+   cd ../ai-ticket-frontend
+   npm install
    ```
 
-6. **Access the application:**
-   - Open your browser and go to `http://localhost:8000` (or the port specified).
+4. **Set up environment variables:**
+   - Copy `.env.example` to `.env` in `ai-ticket-assistant` and fill in your MongoDB URI, JWT secret, Gemini API key, and mail credentials.
+
+5. **Run the backend:**
+   ```sh
+   npm run dev
+   # or for Inngest local dev
+   npm run inngest-dev
+   ```
+
+6. **Run the frontend:**
+   ```sh
+   npm run dev
+   ```
+
+7. **Access the application:**
+   - Frontend: [http://localhost:5173](http://localhost:5173) (default Vite port)
+   - Backend API: [http://localhost:3000](http://localhost:3000)
 
 ## Contributing
 
@@ -62,4 +76,4 @@ Contributions are welcome! Please open issues or submit pull requests for improv
 
 ## License
 
-This project is licensed under the
+This project is licensed under the MIT
